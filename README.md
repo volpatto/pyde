@@ -5,4 +5,4 @@ Although SciPy already provides this method, I implemented it myself for learnin
 
 # Contact
 
-One can contact me though the email <volpatto@lncc.br>.
+One can contact me through the email <volpatto@lncc.br>.

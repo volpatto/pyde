@@ -1,5 +1,6 @@
 # PyDE: A Python implementation of Differential Evolution procedure for unconstrained optimization
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/b2498b2edece40bf96aac44b94a90092)](https://app.codacy.com/app/volpatto/pyde?utm_source=github.com&utm_medium=referral&utm_content=volpatto/pyde&utm_campaign=Badge_Grade_Settings)
 [![Build Status](https://travis-ci.com/volpatto/pyde.svg?branch=master)](https://travis-ci.com/volpatto/pyde)
 
 Here I provide a simple Python 3.6 implementation of Differential Evolution procedure to solve unconstrained optimization problems.

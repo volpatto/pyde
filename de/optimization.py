@@ -81,7 +81,7 @@ def _check_convergence(solution, tol=1e-8):
 
 def optimize(
         fobj, dim, low_limit, high_limit,
-        N=50, max_number_of_generations=2000,
+        N=100, max_number_of_generations=2000,
         mutation_parameter=0.9, scale_factor=0.5, seed=974378
 ):
     """

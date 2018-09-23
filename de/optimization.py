@@ -1,3 +1,7 @@
+"""
+This module contains the core Differential Evolution calculations.
+"""
+
 import numpy as np
 import numpy.random as rnd
 

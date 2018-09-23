@@ -22,7 +22,7 @@ VERSION = None
 
 # What packages are required for this module to be executed?
 REQUIRED = [
-    'numpy', 'pytest'
+    'numpy', 'pytest', 'numpydoc'
 ]
 
 # What packages are optional?

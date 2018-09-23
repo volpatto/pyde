@@ -18,7 +18,7 @@ URL = 'https://github.com/volpatto/pyde'
 EMAIL = 'volpatto@lncc.br'
 AUTHOR = 'Diego Volpatto'
 REQUIRES_PYTHON = '>=3.6.5'
-VERSION = None
+VERSION = '1.0.1-beta'
 
 # What packages are required for this module to be executed?
 REQUIRED = [

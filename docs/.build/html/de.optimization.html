@@ -162,12 +162,10 @@
             
   <div class="section" id="module-de.optimization">
 <span id="de-optimization"></span><h1>de.optimization<a class="headerlink" href="#module-de.optimization" title="Permalink to this headline">¶</a></h1>
-<p>This module provides the Differential Evolution optimization core.</p>
 <dl class="function">
 <dt id="de.optimization.optimize">
 <code class="descclassname">de.optimization.</code><code class="descname">optimize</code><span class="sig-paren">(</span><em>fobj</em>, <em>dim</em>, <em>low_limit</em>, <em>high_limit</em>, <em>N=100</em>, <em>max_number_of_generations=2000</em>, <em>mutation_parameter=0.9</em>, <em>scale_factor=0.5</em>, <em>seed=974378</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/de/optimization.html#optimize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#de.optimization.optimize" title="Permalink to this definition">¶</a></dt>
-<dd><p>Differential Evolution calculations.</p>
-<p>This routine computes a minimum of a given objective function.
+<dd><p>Differential Evolution calculations. This routine computes a minimum of a given objective function.
 The actual method is only valid for unconstrained optimization problems.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -186,10 +184,11 @@ The actual method is only valid for unconstrained optimization problems.</p>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The solution coordinates and the objective function evaluated at this point.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The solution coordinates, the objective function evaluated at this point,
+the method convergence’s flag and the output log message.</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">tuple(numpy.ndarray, float)</p>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">tuple</p>
 </td>
 </tr>
 </tbody>

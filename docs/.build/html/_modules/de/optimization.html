@@ -145,11 +145,7 @@
            <div itemprop="articleBody">
             
   <h1>Source code for de.optimization</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">This module provides the Differential Evolution optimization core.</span>
-<span class="sd">&quot;&quot;&quot;</span>
-
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">numpy.random</span> <span class="k">as</span> <span class="nn">rnd</span>
 
 
@@ -162,13 +158,13 @@
 <span class="sd">        An input vector.</span>
 
 <span class="sd">    :param int idx:</span>
-<span class="sd">        An index which can not be among the 3 output indices.</span>
+<span class="sd">        An index which can not be amoung the 3 output indices.</span>
 
 <span class="sd">    :param int amount:</span>
 <span class="sd">        The number of different indices desired.</span>
 
 <span class="sd">    :return:</span>
-<span class="sd">        The mutual different indices.</span>
+<span class="sd">        The mutual different indices</span>
 <span class="sd">    :rtype: numpy.ndarray</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">vec_size</span> <span class="o">=</span> <span class="n">vec</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
@@ -236,9 +232,7 @@
         <span class="n">mutation_parameter</span><span class="o">=</span><span class="mf">0.9</span><span class="p">,</span> <span class="n">scale_factor</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">974378</span>
 <span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Differential Evolution calculations.</span>
-
-<span class="sd">    This routine computes a minimum of a given objective function.</span>
+<span class="sd">    Differential Evolution calculations. This routine computes a minimum of a given objective function.</span>
 <span class="sd">    The actual method is only valid for unconstrained optimization problems.</span>
 
 <span class="sd">    :param function fobj:</span>
@@ -269,8 +263,9 @@
 <span class="sd">        A seed to be employed in the pseudo-random numbers generation.</span>
 
 <span class="sd">    :return:</span>
-<span class="sd">        The solution coordinates and the objective function evaluated at this point.</span>
-<span class="sd">    :rtype: tuple(numpy.ndarray, float)</span>
+<span class="sd">        The solution coordinates, the objective function evaluated at this point,</span>
+<span class="sd">        the method convergence&#39;s flag and the output log message.</span>
+<span class="sd">    :rtype: tuple</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="c1"># Setting the seed</span>

@@ -1,0 +1,9 @@
+de
+===============
+
+In this page it's provided the de package's modules.
+
+.. autosummary::
+   :toctree: _autosummary
+
+   optimization

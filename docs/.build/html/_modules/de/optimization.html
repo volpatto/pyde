@@ -1,0 +1,398 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>de.optimization &mdash; pyDE 1.0.1-beta documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> pyDE
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">de</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">pyDE</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>de.optimization</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for de.optimization</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">This module provides the Differential Evolution optimization core.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">numpy.random</span> <span class="k">as</span> <span class="nn">rnd</span>
+
+
+<span class="k">def</span> <span class="nf">_get_different_indices</span><span class="p">(</span><span class="n">vec</span><span class="p">,</span> <span class="n">idx</span><span class="p">,</span> <span class="n">amount</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Get a number of mutual different indicies of an given vector and an index which can not be</span>
+<span class="sd">    selected.</span>
+
+<span class="sd">    :param numpy.ndarray vec:</span>
+<span class="sd">        An input vector.</span>
+
+<span class="sd">    :param int idx:</span>
+<span class="sd">        An index which can not be among the 3 output indices.</span>
+
+<span class="sd">    :param int amount:</span>
+<span class="sd">        The number of different indices desired.</span>
+
+<span class="sd">    :return:</span>
+<span class="sd">        The mutual different indices.</span>
+<span class="sd">    :rtype: numpy.ndarray</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">vec_size</span> <span class="o">=</span> <span class="n">vec</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([])</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">amount</span><span class="p">):</span>
+        <span class="n">it_flag</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">while</span> <span class="n">it_flag</span><span class="p">:</span>
+            <span class="n">candidate</span> <span class="o">=</span> <span class="n">rnd</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="n">vec_size</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">candidate</span> <span class="o">!=</span> <span class="n">idx</span> <span class="ow">and</span> <span class="n">candidate</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">x</span><span class="p">:</span>
+                <span class="n">it_flag</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">candidate</span><span class="p">)</span>
+    <span class="c1"># Assuring that output vector has integer values</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">x</span>
+
+
+<span class="k">def</span> <span class="nf">_generate_initial_population</span><span class="p">(</span><span class="n">dim</span><span class="p">,</span> <span class="n">low_lim</span><span class="p">,</span> <span class="n">high_lim</span><span class="p">,</span> <span class="n">N</span><span class="o">=</span><span class="mi">50</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Pseudo-random generation of the initial population.</span>
+
+<span class="sd">    :param int dim:</span>
+<span class="sd">        The number of dimensions of the objective function argument array.</span>
+
+<span class="sd">    :param float low_lim:</span>
+<span class="sd">        The inferior limit of the hypercube search region.</span>
+
+<span class="sd">    :param float high_lim:</span>
+<span class="sd">        The superior limit of the hypercube search region.</span>
+
+<span class="sd">    :param int N:</span>
+<span class="sd">        The number of individuals to be generated.</span>
+
+<span class="sd">    :return:</span>
+<span class="sd">        The population and associated mutation vector</span>
+<span class="sd">    :rtype: tuple(numpy.ndarray, numpy.ndarray)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Generating initial population. In this case, in a square domain.</span>
+    <span class="n">population</span> <span class="o">=</span> <span class="n">rnd</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">low_lim</span><span class="p">,</span> <span class="n">high_lim</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">dim</span><span class="p">))</span>
+    <span class="n">mut_vec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">population</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">population</span><span class="p">,</span> <span class="n">mut_vec</span>
+
+
+<span class="k">def</span> <span class="nf">_check_convergence</span><span class="p">(</span><span class="n">solution</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-8</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Check if the convergence of DE procedure is achieved using the standard deviation (SD) as criterium.</span>
+<span class="sd">    If the SD is smaller than an adopted numerical tolerance, the convergence is sinalized as True.</span>
+
+<span class="sd">    :param numpy.ndarray solution:</span>
+<span class="sd">        The solution candidate.</span>
+
+<span class="sd">    :param float tol:</span>
+<span class="sd">        Numerical tolerance of convergence.</span>
+
+<span class="sd">    :return:</span>
+<span class="sd">        A bool indicating if convergence was achieved (True).</span>
+<span class="sd">    :rtype: bool</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">solution_sd</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">solution</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">solution_sd</span> <span class="o">&lt;</span> <span class="n">tol</span>
+
+
+<div class="viewcode-block" id="optimize"><a class="viewcode-back" href="../../de.optimization.html#de.optimization.optimize">[docs]</a><span class="k">def</span> <span class="nf">optimize</span><span class="p">(</span>
+        <span class="n">fobj</span><span class="p">,</span> <span class="n">dim</span><span class="p">,</span> <span class="n">low_limit</span><span class="p">,</span> <span class="n">high_limit</span><span class="p">,</span>
+        <span class="n">N</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">max_number_of_generations</span><span class="o">=</span><span class="mi">2000</span><span class="p">,</span>
+        <span class="n">mutation_parameter</span><span class="o">=</span><span class="mf">0.9</span><span class="p">,</span> <span class="n">scale_factor</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">974378</span>
+<span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Differential Evolution calculations.</span>
+
+<span class="sd">    This routine computes a minimum of a given objective function.</span>
+<span class="sd">    The actual method is only valid for unconstrained optimization problems.</span>
+
+<span class="sd">    :param function fobj:</span>
+<span class="sd">        The objective function.</span>
+
+<span class="sd">    :param int dim:</span>
+<span class="sd">        Number of dimensions of the objective function&#39;s argument.</span>
+
+<span class="sd">    :param float low_limit:</span>
+<span class="sd">        The inferior limit of the hypercube search region.</span>
+
+<span class="sd">    :param float high_limit:</span>
+<span class="sd">        The superior limit of the hypercube search region.</span>
+
+<span class="sd">    :param int N:</span>
+<span class="sd">        The number of individuals to be generated.</span>
+
+<span class="sd">    :param int max_number_of_generations:</span>
+<span class="sd">        Max number of generations to be employed by the procedure.</span>
+
+<span class="sd">    :param float mutation_parameter:</span>
+<span class="sd">        A parameter to related to the success&#39; rate of mutations.</span>
+
+<span class="sd">    :param float scale_factor:</span>
+<span class="sd">        A scale factor of linear combination employed in the mutation procedure.</span>
+
+<span class="sd">    :param int seed:</span>
+<span class="sd">        A seed to be employed in the pseudo-random numbers generation.</span>
+
+<span class="sd">    :return:</span>
+<span class="sd">        The solution coordinates and the objective function evaluated at this point.</span>
+<span class="sd">    :rtype: tuple(numpy.ndarray, float)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Setting the seed</span>
+    <span class="n">rnd</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
+
+    <span class="c1"># Generating the population</span>
+    <span class="n">population</span><span class="p">,</span> <span class="n">mutation_vector</span> <span class="o">=</span> <span class="n">_generate_initial_population</span><span class="p">(</span>
+        <span class="n">dim</span><span class="o">=</span><span class="n">dim</span><span class="p">,</span>
+        <span class="n">low_lim</span><span class="o">=</span><span class="n">low_limit</span><span class="p">,</span>
+        <span class="n">high_lim</span><span class="o">=</span><span class="n">high_limit</span><span class="p">,</span>
+        <span class="n">N</span><span class="o">=</span><span class="n">N</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Setting the tolerance and convergence flag</span>
+    <span class="n">flag_convergence</span> <span class="o">=</span> <span class="kc">False</span>
+
+    <span class="c1"># Initializing generation counter and setting a iteration limiter</span>
+    <span class="n">gen</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="c1"># Getting best initial solution</span>
+    <span class="n">fobj_best</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
+        <span class="n">fobj_best_prev</span> <span class="o">=</span> <span class="n">fobj</span><span class="p">(</span><span class="n">population</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:])</span>
+        <span class="k">if</span> <span class="n">fobj_best_prev</span> <span class="o">&lt;=</span> <span class="n">fobj_best</span><span class="p">:</span>
+            <span class="n">fobj_best</span> <span class="o">=</span> <span class="n">fobj_best_prev</span>
+
+    <span class="c1"># DE loop</span>
+    <span class="k">while</span> <span class="ow">not</span> <span class="n">flag_convergence</span> <span class="ow">and</span> <span class="n">gen</span> <span class="o">&lt;</span> <span class="n">max_number_of_generations</span><span class="p">:</span>
+        <span class="n">gen</span> <span class="o">=</span> <span class="n">gen</span> <span class="o">+</span> <span class="mi">1</span>
+
+        <span class="c1"># Loop for mutation procedure over a generation</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
+            <span class="n">gen_idx</span> <span class="o">=</span> <span class="n">_get_different_indices</span><span class="p">(</span><span class="n">population</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+            <span class="n">r1</span><span class="p">,</span> <span class="n">r2</span><span class="p">,</span> <span class="n">r3</span> <span class="o">=</span> <span class="n">gen_idx</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">gen_idx</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">gen_idx</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+            <span class="n">delta_i</span> <span class="o">=</span> <span class="n">rnd</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="n">dim</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">dim</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">rnd</span><span class="o">.</span><span class="n">uniform</span><span class="p">()</span> <span class="o">&lt;=</span> <span class="n">mutation_parameter</span> <span class="ow">or</span> <span class="n">j</span> <span class="o">==</span> <span class="n">delta_i</span><span class="p">:</span>
+                    <span class="n">mutation_vector</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">population</span><span class="p">[</span><span class="n">r1</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">+</span> <span class="n">scale_factor</span><span class="o">*</span><span class="p">(</span><span class="n">population</span><span class="p">[</span><span class="n">r2</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span><span class="o">-</span><span class="n">population</span><span class="p">[</span><span class="n">r3</span><span class="p">,</span> <span class="n">j</span><span class="p">])</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">mutation_vector</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">population</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span>
+
+        <span class="c1"># Loop for surviving procedure over a generation</span>
+        <span class="n">conv_current</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">fobj</span><span class="p">(</span><span class="n">mutation_vector</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:])</span> <span class="o">&lt;=</span> <span class="n">fobj</span><span class="p">(</span><span class="n">population</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:]):</span>
+                <span class="n">population</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">mutation_vector</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:]</span>
+            <span class="n">conv_candidate</span> <span class="o">=</span> <span class="n">fobj</span><span class="p">(</span><span class="n">population</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:])</span>
+            <span class="k">if</span> <span class="n">conv_candidate</span> <span class="o">&lt;=</span> <span class="n">conv_current</span><span class="p">:</span>
+                <span class="n">conv_current</span> <span class="o">=</span> <span class="n">conv_candidate</span>
+                <span class="n">idx_sol</span> <span class="o">=</span> <span class="n">i</span>
+
+        <span class="n">solution</span> <span class="o">=</span> <span class="n">population</span><span class="p">[</span><span class="n">idx_sol</span><span class="p">,</span> <span class="p">:]</span>
+        <span class="n">fobj_best</span> <span class="o">=</span> <span class="n">fobj</span><span class="p">(</span><span class="n">solution</span><span class="p">)</span>
+
+        <span class="n">flag_convergence</span> <span class="o">=</span> <span class="n">_check_convergence</span><span class="p">(</span><span class="n">solution</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">flag_convergence</span><span class="p">:</span>
+        <span class="n">log_message</span> <span class="o">=</span> <span class="n">f</span><span class="s2">&quot;Convergence achieved within </span><span class="si">{gen}</span><span class="s2"> generations:</span><span class="se">\n</span><span class="s2">&quot;</span> \
+                      <span class="n">f</span><span class="s2">&quot;Solution = </span><span class="si">{solution}</span><span class="se">\n</span><span class="s2">&quot;</span> \
+                      <span class="n">f</span><span class="s2">&quot;f(x)= </span><span class="si">{fobj_best}</span><span class="s2">&quot;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">log_message</span> <span class="o">=</span> <span class="n">f</span><span class="s2">&quot;Number maximum of generations (</span><span class="si">{max_number_of_generations}</span><span class="s2">) exceed:</span><span class="se">\n</span><span class="s2">&quot;</span> \
+                      <span class="n">f</span><span class="s2">&quot;Solution = </span><span class="si">{solution}</span><span class="se">\n</span><span class="s2">&quot;</span> \
+                      <span class="n">f</span><span class="s2">&quot;f(x)= </span><span class="si">{fobj_best}</span><span class="s2">&quot;</span>
+
+    <span class="k">return</span> <span class="n">solution</span><span class="p">,</span> <span class="n">fobj_best</span><span class="p">,</span> <span class="n">flag_convergence</span><span class="p">,</span> <span class="n">log_message</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Diego T. Volpatto.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'1.0.1-beta',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

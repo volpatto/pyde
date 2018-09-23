@@ -1,3 +1,7 @@
+"""
+This module contains the core Differential Evolution calculations.
+"""
+
 import numpy as np
 import numpy.random as rnd
 
@@ -116,8 +120,9 @@ def optimize(
         A seed to be employed in the pseudo-random numbers generation.
 
     :return:
-        The solution coordinates and the objective function evaluated at this point.
-    :rtype: tuple(numpy.ndarray, float)
+        The solution coordinates, the objective function evaluated at this point,
+        the method convergence's flag and the output log message.
+    :rtype: tuple
     """
 
     # Setting the seed

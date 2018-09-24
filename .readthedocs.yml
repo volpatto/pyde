@@ -8,4 +8,4 @@ python:
   setup_py_install: false
   pip_install: true
 
-requirements_file: requirements_rtd.txt
+requirements_file: docs/requirements_rtd.txt

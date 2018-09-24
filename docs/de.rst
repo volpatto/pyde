@@ -5,4 +5,5 @@ Submodules
 ----------
 
 .. toctree::
-	de.optimization
+    de.optimization
+    de.benchmarks
